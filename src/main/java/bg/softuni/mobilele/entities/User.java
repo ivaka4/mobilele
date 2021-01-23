@@ -1,9 +1,6 @@
 package bg.softuni.mobilele.entities;
 
-import bg.softuni.mobilele.entities.enums.UserRoleEnum;
-import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,32 +19,24 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false, unique = true)
-    private String username;
+    private java.lang.String username;
     @Column(name = "first_name",nullable = false)
-    private String firstName;
+    private java.lang.String firstName;
     @Column(name = "last_name", nullable = false)
-    private String lastName;
+    private java.lang.String lastName;
     @Column(name = "is_active")
     private boolean isActive;
     @Column(nullable = false)
-    private String password;
+    private java.lang.String password;
 
     @ManyToMany
     private Set<UserRole> roles;
 
     @Column(name = "image_url")
-    private String imageUrl;
+    private java.lang.String imageUrl;
 
     @OneToMany(mappedBy = "seller")
     private List<Offer> offer;
-
-    public User(@Length(min = 2, max = 20) String firstName, @Length(min = 2, max = 20) String lastName, @Length(min = 2, max = 20) String username, @Length(min = 2, max = 20) String password, @NonNull Set<UserRole> roles) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.roles = roles;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

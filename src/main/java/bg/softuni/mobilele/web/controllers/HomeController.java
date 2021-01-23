@@ -28,7 +28,7 @@ public class HomeController extends BaseController{
 
 
     @GetMapping("/")
-    public ModelAndView index(){
-        return new ModelAndView("index");
+    public String index(){
+        return "index";
     }
 }

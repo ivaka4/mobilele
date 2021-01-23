@@ -1,11 +1,11 @@
 package bg.softuni.mobilele.services.impl;
 
 import bg.softuni.mobilele.entities.User;
-import bg.softuni.mobilele.entities.enums.UserRoleEnum;
 import bg.softuni.mobilele.repositories.UserRepository;
+import bg.softuni.mobilele.repositories.UserRoleRepository;
 import bg.softuni.mobilele.services.UserService;
-import bg.softuni.mobilele.web.models.UserRegisterModel;
-import bg.softuni.mobilele.web.models.UserServiceModel;
+import bg.softuni.mobilele.entities.view.UserRegisterModel;
+import bg.softuni.mobilele.entities.view.UserServiceModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,13 +18,14 @@ import java.util.HashSet;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-//    private final UserRoleRepository userRoleRepository;
+    private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -35,9 +36,10 @@ public class UserServiceImpl implements UserService {
         User user = this.modelMapper.map(userRegisterModel, User.class);
         if (userRepository.count() == 0){
             user.setRoles(new HashSet<>());
+            user.getRoles().add(userRoleRepository.findById(1L).get());
         } else {
             user.setRoles(new HashSet<>());
-//            user.getRoles().add(this.userRoleRepository.findByRole("USER"));
+            user.getRoles().add(this.userRoleRepository.getOne(2L));
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);

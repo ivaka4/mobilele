@@ -1,8 +1,8 @@
 package bg.softuni.mobilele.services;
 
 import bg.softuni.mobilele.entities.User;
-import bg.softuni.mobilele.web.models.UserRegisterModel;
-import bg.softuni.mobilele.web.models.UserServiceModel;
+import bg.softuni.mobilele.entities.view.UserRegisterModel;
+import bg.softuni.mobilele.entities.view.UserServiceModel;
 
 import java.util.Collection;
 

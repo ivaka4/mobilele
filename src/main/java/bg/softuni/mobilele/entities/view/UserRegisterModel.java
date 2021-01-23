@@ -1,18 +1,17 @@
-package bg.softuni.mobilele.web.models;
+package bg.softuni.mobilele.entities.view;
 
-import bg.softuni.mobilele.entities.enums.UserRoleEnum;
 
 public class UserRegisterModel {
     private String firstName;
     private String lastName;
     private String username;
     private String password;
-    private UserRoleEnum roles;
+    private String roles;
 
     public UserRegisterModel() {
     }
 
-    public UserRegisterModel(String firstName, String lastName, String username, String password, UserRoleEnum roles) {
+    public UserRegisterModel(java.lang.String firstName, java.lang.String lastName, java.lang.String username, java.lang.String password, String roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -20,43 +19,43 @@ public class UserRegisterModel {
         this.roles = roles;
     }
 
-    public String getUsername() {
+    public java.lang.String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(java.lang.String username) {
         this.username = username;
     }
 
-    public String getPassword() {
+    public java.lang.String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(java.lang.String password) {
         this.password = password;
     }
 
-    public String getFirstName() {
+    public java.lang.String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(java.lang.String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public java.lang.String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(java.lang.String lastName) {
         this.lastName = lastName;
     }
 
-    public UserRoleEnum getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(UserRoleEnum roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
     }
 }

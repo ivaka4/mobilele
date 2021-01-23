@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.web.models;
+package bg.softuni.mobilele.entities.view;
 
 import bg.softuni.mobilele.entities.enums.UserRoleEnum;
 
