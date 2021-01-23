@@ -29,8 +29,8 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private java.lang.String password;
 
-    @ManyToMany
-    private Set<UserRole> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<UserRole> authorities;
 
     @Column(name = "image_url")
     private java.lang.String imageUrl;
@@ -38,12 +38,10 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "seller")
     private List<Offer> offer;
 
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> role.toString() + "_ROLE")
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+    public Set<UserRole> getAuthorities() {
+        return authorities;
     }
 
     @Override

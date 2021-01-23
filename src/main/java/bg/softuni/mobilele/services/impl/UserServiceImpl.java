@@ -8,6 +8,8 @@ import bg.softuni.mobilele.entities.view.UserRegisterModel;
 import bg.softuni.mobilele.entities.view.UserServiceModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +37,11 @@ public class UserServiceImpl implements UserService {
     public UserServiceModel registerUser(UserRegisterModel userRegisterModel) {
         User user = this.modelMapper.map(userRegisterModel, User.class);
         if (userRepository.count() == 0){
-            user.setRoles(new HashSet<>());
-            user.getRoles().add(userRoleRepository.findById(1L).get());
+            user.setAuthorities(new HashSet<>());
+            user.getAuthorities().add(userRoleRepository.findById(1L).get());
         } else {
-            user.setRoles(new HashSet<>());
-            user.getRoles().add(this.userRoleRepository.getOne(2L));
+            user.setAuthorities(new HashSet<>());
+            user.getAuthorities().add(this.userRoleRepository.getOne(2L));
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
@@ -75,5 +77,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public long getUsersCount() {
         return userRepository.count();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.userRepository.findByUsername(username);
     }
 }

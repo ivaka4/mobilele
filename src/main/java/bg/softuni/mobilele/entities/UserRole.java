@@ -20,14 +20,14 @@ import javax.persistence.*;
 public class UserRole extends BaseEntity implements GrantedAuthority {
 
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum userRole;
+    private UserRoleEnum roles;
 
     public UserRole(UserRoleEnum userRole) {
-        this.userRole = userRole;
+        this.roles = userRole;
     }
     @Override
     @Column(name = "roles", nullable = false, unique = true)
     public String getAuthority() {
-        return userRole.name();
+        return roles.name();
     }
 }
