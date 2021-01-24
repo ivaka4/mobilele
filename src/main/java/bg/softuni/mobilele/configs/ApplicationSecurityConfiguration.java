@@ -1,15 +1,29 @@
 package bg.softuni.mobilele.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+
+    public ApplicationSecurityConfiguration(UserDetailsService userDetailsService,
+        PasswordEncoder passwordEncoder) {
+
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -18,16 +32,24 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
             .csrf().disable()
             .authorizeRequests()
             .antMatchers("/js/**", "/css/**", "/img/**").permitAll()
-            .antMatchers("/", "/users/register", "/users/login").anonymous()
+            .antMatchers("/", "/users/register", "/users/login").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()
-            .loginPage("/users/login")
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .defaultSuccessUrl("/")
+                .loginPage("/users/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .loginProcessingUrl("/users/login")
+                .defaultSuccessUrl("/demo")//TODO: <-- change me!
             .and()
-            .logout()
-            .logoutSuccessUrl("/");
+                .logout()
+                .logoutSuccessUrl("/");
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth)
+        throws Exception {
+        auth.userDetailsService(userDetailsService).
+            passwordEncoder(passwordEncoder);
     }
 }
