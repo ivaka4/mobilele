@@ -3,7 +3,10 @@ package bg.softuni.mobilele.web.controllers;
 import bg.softuni.mobilele.services.UserService;
 import bg.softuni.mobilele.entities.view.UserRegisterModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +38,8 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/login")
-    public ModelAndView login() {
-        return new ModelAndView("auth-login");
+    public String login(@AuthenticationPrincipal UserDetails user, Model model) {
+        model.addAttribute("user", user);
+        return "auth-login";
     }
 }

@@ -13,21 +13,26 @@ import org.springframework.stereotype.Controller;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_roles")
+@Table(name = "roles")
 @Getter
 @Setter
 @NoArgsConstructor
 public class UserRole extends BaseEntity implements GrantedAuthority {
 
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum roles;
+    private UserRoleEnum authority;
 
     public UserRole(UserRoleEnum userRole) {
-        this.roles = userRole;
+        this.authority = userRole;
     }
+
     @Override
     @Column(name = "roles", nullable = false, unique = true)
     public String getAuthority() {
-        return roles.name();
+        return authority.name();
+    }
+
+    public void setRoles(UserRoleEnum roles) {
+        this.authority = roles;
     }
 }

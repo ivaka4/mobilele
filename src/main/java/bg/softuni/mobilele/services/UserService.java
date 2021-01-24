@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
 
     UserServiceModel registerUser(UserRegisterModel userRegisterModel);
     Collection<User> getUsers();

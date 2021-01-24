@@ -1,6 +1,7 @@
 package bg.softuni.mobilele.services.impl;
 
 import bg.softuni.mobilele.entities.User;
+import bg.softuni.mobilele.entities.UserRole;
 import bg.softuni.mobilele.repositories.UserRepository;
 import bg.softuni.mobilele.repositories.UserRoleRepository;
 import bg.softuni.mobilele.services.UserService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,28 +24,28 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public UserServiceModel registerUser(UserRegisterModel userRegisterModel) {
         User user = this.modelMapper.map(userRegisterModel, User.class);
-        if (userRepository.count() == 0){
+        if (userRegisterModel.getRoles().equals("ADMIN")){
             user.setAuthorities(new HashSet<>());
             user.getAuthorities().add(userRoleRepository.findById(1L).get());
         } else {
             user.setAuthorities(new HashSet<>());
-            user.getAuthorities().add(this.userRoleRepository.getOne(2L));
+            user.getAuthorities().add(userRoleRepository.findById(2L).get());
         }
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
     }
 
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).get();
     }
 
     @Override
@@ -79,8 +81,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.count();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findByUsername(username);
-    }
 }

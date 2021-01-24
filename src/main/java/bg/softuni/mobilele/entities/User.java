@@ -17,54 +17,55 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
-    private java.lang.String username;
+    private String username;
     @Column(name = "first_name",nullable = false)
-    private java.lang.String firstName;
+    private String firstName;
     @Column(name = "last_name", nullable = false)
-    private java.lang.String lastName;
+    private String lastName;
     @Column(name = "is_active")
     private boolean isActive;
     @Column(nullable = false)
-    private java.lang.String password;
+    private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> authorities;
 
     @Column(name = "image_url")
-    private java.lang.String imageUrl;
+    private String imageUrl;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", fetch = FetchType.EAGER)
     private List<Offer> offer;
 
 
-    @Override
-    public Set<UserRole> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    @Transient
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    @Transient
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    @Transient
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    @Transient
-    public boolean isEnabled() {
-        return true;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString()))
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    @Transient
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    @Transient
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    @Transient
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    @Transient
+//    public boolean isEnabled() {
+//        return true;
+//    }
 }
