@@ -12,7 +12,6 @@ public class UserServiceModel {
     private Set<UserRoleEnum> roles;
 
 
-
     public UserServiceModel() {
     }
 

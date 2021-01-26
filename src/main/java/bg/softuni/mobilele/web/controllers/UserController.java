@@ -34,7 +34,7 @@ public class UserController extends BaseController {
 //            return super.redirect("/users/register");
 //        }
         this.userService.registerUser(userRegisterModel);
-        return super.redirect("users/login");
+        return super.redirect("/users/login");
     }
 
     @GetMapping("/login")
