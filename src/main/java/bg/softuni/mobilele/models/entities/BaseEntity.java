@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.entities;
+package bg.softuni.mobilele.models.entities;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +12,8 @@ import javax.persistence.MappedSuperclass;
 
 
 @MappedSuperclass
+@Getter
+@Setter
 public class BaseEntity {
 
   @Id

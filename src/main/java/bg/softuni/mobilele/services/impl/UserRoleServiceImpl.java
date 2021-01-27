@@ -1,8 +1,7 @@
 package bg.softuni.mobilele.services.impl;
 
-import bg.softuni.mobilele.entities.UserRole;
-import bg.softuni.mobilele.entities.enums.UserRoleEnum;
-import bg.softuni.mobilele.entities.view.UserRoleServiceModel;
+import bg.softuni.mobilele.models.entities.UserRole;
+import bg.softuni.mobilele.models.enums.UserRoleEnum;
 import bg.softuni.mobilele.repositories.UserRoleRepository;
 import bg.softuni.mobilele.services.UserRoleService;
 import org.modelmapper.ModelMapper;
@@ -27,6 +26,11 @@ public class UserRoleServiceImpl implements UserRoleService {
         userRoleRepository.save(admin);
         userRoleRepository.save(user);
 
+    }
+
+    @Override
+    public int getRolesCount() {
+        return (int) this.userRoleRepository.count();
     }
 
 //    @Override

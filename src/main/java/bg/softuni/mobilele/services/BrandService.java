@@ -1,8 +1,10 @@
 package bg.softuni.mobilele.services;
 
-import bg.softuni.mobilele.entities.Brand;
+import bg.softuni.mobilele.models.view.BrandViewModel;
+
+import java.util.List;
 
 public interface BrandService {
-    Brand create (Brand brand);
+    List<BrandViewModel> getAllBrands();
 
 }

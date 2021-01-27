@@ -1,11 +1,10 @@
 package bg.softuni.mobilele.services.impl;
 
-import bg.softuni.mobilele.entities.User;
-import bg.softuni.mobilele.entities.view.UserSecurity;
+import bg.softuni.mobilele.models.entities.User;
+import bg.softuni.mobilele.models.view.UserSecurity;
 import bg.softuni.mobilele.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

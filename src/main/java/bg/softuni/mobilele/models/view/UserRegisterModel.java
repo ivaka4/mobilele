@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.entities.view;
+package bg.softuni.mobilele.models.view;
 
 
 public class UserRegisterModel {

@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.entities.enums;
+package bg.softuni.mobilele.models.enums;
 
 public enum UserRoleEnum {
   ADMIN,

@@ -1,14 +1,10 @@
-package bg.softuni.mobilele.entities;
+package bg.softuni.mobilele.models.entities;
 
-import bg.softuni.mobilele.entities.BaseEntity;
-import bg.softuni.mobilele.entities.enums.UserRoleEnum;
-import com.fasterxml.jackson.databind.ser.Serializers;
-import lombok.AllArgsConstructor;
+import bg.softuni.mobilele.models.enums.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
      <meta charset="UTF-8">
@@ -45,20 +46,21 @@
                         <a class="dropdown-item" href="/">Something else here</a>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="isAuthenticated" th:if="${user}" class="nav-item">
                     <div class="form-inline my-2 my-lg-0 border px-3">
                         <div class="logged-user"
-                             text="Welcome, Gosho"></div>
+                             th:text="|Welcome, ${user}|"></div>
                         <a class="nav-link" href="/users/logout">Logout</a>
                     </div>
                 </li>
-                
+                <div sec:authorize="isAnonymous()">
                     <li class="nav-item">
                         <a class="nav-link" href="/users/register">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/users/login">Login</a>
                     </li>
+                </div>
                 
             </ul>
         </div>
@@ -68,22 +70,30 @@
 
 <div class="container-fluid">
     <h2 class="text-center text-white mt-5">Details</h2>
-    <div class="offers row mx-auto d-flex flex-row justify-content-center">
+    <div
+            th:object="${offer}"
+            class="offers row mx-auto d-flex flex-row justify-content-center">
         <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
 
             <div class="card-body pb-1">
                 <h5 class="card-title">
-                    Offer year Brand name Model name</h5>
+                    <span th:text="*{year}">Offer year </span>
+                    <span th:text="*{brand}">Brand name </span>
+                    <span th:text="*{model}">Model name </span>
+                </h5>
             </div>
             <ul class="offer-details list-group list-group-flush">
                 <li class="list-group-item">
-                    <div class="card-text"><span>• Mileage</span></div>
-                    <div class="card-text"><span>• Price</span></div>
-                    <div class="card-text"><span>• Engine type</span></div>
-                    <div class="card-text"><span>• Transmission type</span></div>
-                    <div class="card-text"><span>• Offer created</span></div>
-                    <div class="card-text"><span>• Offer modified</span></div>
-                    <div class="card-text"><span>• Seller - First and Last name</span></div>
+                    <div class="card-text">• Mileage: <span th:text="*{mileage}">Mileage</span> km</div>
+                    <div class="card-text">• Price: <span th:text="*{price}">Price</span> BGN</div>
+                    <div class="card-text">• Engine: <span th:text="*{engine}">Engine type</span></div>
+                    <div class="card-text">• Transmission: <span th:text="*{transmission}">Transmission type</span></div>
+                    <div class="card-text">• Created: <span th:text="*{#temporals.format(offerCreated, 'dd-MM-yyyy HH:mm')}">Created</span></div>
+                    <div class="card-text">• Last updated: <span th:text="*{#temporals.format(offerCreated, 'dd-MM-yyyy HH:mm')}">Updated</span></div>
+                    <div class="card-text">• Seller:
+                        <span th:text="*{sellerFirstName}">First name</span>
+                        <span th:text="*{sellerLastName}">Last name</span>
+                    </div>
                 </li>
             </ul>
             <div class="card-body">
@@ -92,10 +102,11 @@
             </div>
         </div>
         <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
-            <img src="/" class="card-img-top"  alt="Car image">
+            <img th:src="*{imageUrl}" class="card-img-top"  alt="Car image">
         </div>
     </div>
 </div>
+
 
 <div>
              <footer> </footer>

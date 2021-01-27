@@ -1,8 +1,7 @@
-package bg.softuni.mobilele.entities;
+package bg.softuni.mobilele.models.entities;
 
-import bg.softuni.mobilele.entities.enums.EngineEnum;
-import bg.softuni.mobilele.entities.enums.TransmissionEnum;
-import com.fasterxml.jackson.databind.ser.Serializers;
+import bg.softuni.mobilele.models.enums.EngineEnum;
+import bg.softuni.mobilele.models.enums.TransmissionEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +45,11 @@ public class Offer extends BaseEntity {
     @ManyToOne
     private User seller;
 
+    public EngineEnum getEngine() {
+        return engine;
+    }
 
-
-
+    public TransmissionEnum getTransmission() {
+        return transmission;
+    }
 }

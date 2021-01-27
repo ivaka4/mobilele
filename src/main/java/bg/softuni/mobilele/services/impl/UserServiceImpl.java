@@ -1,23 +1,20 @@
 package bg.softuni.mobilele.services.impl;
 
-import bg.softuni.mobilele.entities.User;
-import bg.softuni.mobilele.entities.UserRole;
+import bg.softuni.mobilele.models.entities.User;
 import bg.softuni.mobilele.repositories.UserRepository;
 import bg.softuni.mobilele.repositories.UserRoleRepository;
 import bg.softuni.mobilele.services.UserService;
-import bg.softuni.mobilele.entities.view.UserRegisterModel;
-import bg.softuni.mobilele.entities.view.UserServiceModel;
+import bg.softuni.mobilele.models.view.UserRegisterModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserServiceModel registerUser(UserRegisterModel userRegisterModel) {
+    public void registerUser(UserRegisterModel userRegisterModel) {
         User user = this.modelMapper.map(userRegisterModel, User.class);
         if (userRegisterModel.getRoles().equals("ADMIN")){
             user.setAuthorities(new HashSet<>());
@@ -45,8 +42,10 @@ public class UserServiceImpl implements UserService {
             user.setAuthorities(new HashSet<>());
             user.getAuthorities().add(userRoleRepository.findById(2L).get());
         }
+        user.setCreated(Instant.now());
+        user.setModified(Instant.now());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
+        this.userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -77,8 +76,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long getUsersCount() {
-        return userRepository.count();
+    public User getRandomUser() {
+        Random random = new Random();
+        long id =random.nextInt((int) (this.userRepository.count()));
+        return this.userRepository.findById(id).get();
     }
+
+
 
 }
