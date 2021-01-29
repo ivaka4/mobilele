@@ -17,25 +17,14 @@ public class HomeController extends BaseController {
     public HomeController(UserService userService) {
         this.userService = userService;
     }
-//    private final BrandService brandService;
-//    private final OfferService offerService;
-//    private final ModelService modelService;
-
-//    @Autowired
-//    public HomeController(UserService userService, BrandService brandService, OfferService offerService, ModelService modelService) {
-//        this.userService = userService;
-//        this.brandService = brandService;
-//        this.offerService = offerService;
-//        this.modelService = modelService;
-//    }
-
 
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal UserDetails user, Model model) {
-        model.addAttribute("user", user != null ?
+    public ModelAndView index(@AuthenticationPrincipal UserDetails user) {
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("user", user != null ?
                 user.getUsername() :
                 "Anonymous");
-        return "index";
+        return modelAndView;
     }
 
 //    @GetMapping("/home")

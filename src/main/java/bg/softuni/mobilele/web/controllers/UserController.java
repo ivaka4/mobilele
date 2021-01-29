@@ -37,8 +37,9 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/login")
-    public String login(@AuthenticationPrincipal UserDetails user, Model model) {
-        model.addAttribute("user", user);
-        return "auth-login";
+    public ModelAndView login(@AuthenticationPrincipal UserDetails user) {
+        ModelAndView modelAndView = new ModelAndView("auth-login");
+        modelAndView.addObject("user", user);
+        return modelAndView;
     }
 }

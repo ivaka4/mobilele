@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/brands")
-public class BrandController extends BaseController{
+public class BrandController extends BaseController {
     private final BrandService brandService;
 
     @Autowired
@@ -18,7 +18,7 @@ public class BrandController extends BaseController{
     }
 
     @GetMapping("/all")
-    public ModelAndView getAllBrands(){
+    public ModelAndView getAllBrands() {
         ModelAndView modelAndView = new ModelAndView("brands");
         modelAndView.addObject("brands", brandService.getAllBrands());
         return modelAndView;
