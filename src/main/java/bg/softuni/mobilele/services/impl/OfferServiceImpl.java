@@ -5,6 +5,7 @@ import bg.softuni.mobilele.models.entities.Offer;
 import bg.softuni.mobilele.models.view.OfferDetailsViewModel;
 import bg.softuni.mobilele.models.view.OfferSummaryViewModel;
 import bg.softuni.mobilele.models.view.OfferUploadModel;
+import bg.softuni.mobilele.models.view.UpdateOfferViewModel;
 import bg.softuni.mobilele.repositories.ModelRepository;
 import bg.softuni.mobilele.repositories.OfferRepository;
 import bg.softuni.mobilele.services.OfferService;
@@ -73,6 +74,19 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public Optional<OfferDetailsViewModel> getOfferDetails(long id) {
         return offerRepository.findById(id).map(OfferServiceImpl::mapToDetails);
+    }
+
+    @Override
+    public void updateOffer(Long id, UpdateOfferViewModel updateOfferViewModel) {
+        Offer offer = this.modelMapper.map(updateOfferViewModel, Offer.class);
+        offer.setModified(Instant.now());
+        offer.setCreated(offerRepository.findById(id).get().getCreated());
+        this.offerRepository.saveAndFlush(offer);
+    }
+
+    @Override
+    public void deleteOffer(Long id) {
+        this.offerRepository.delete(this.offerRepository.findById(id).get());
     }
 
     private static OfferSummaryViewModel mapToSummary(Offer offerEntity) {

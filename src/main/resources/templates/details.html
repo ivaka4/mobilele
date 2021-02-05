@@ -3,7 +3,7 @@
       xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
-     <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>MobiLeLeLe</title>
     <link rel="stylesheet" href="/css/reset-css.css"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
@@ -22,7 +22,7 @@
     <div
             th:object="${offer}"
             class="offers row mx-auto d-flex flex-row justify-content-center">
-        <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0" >
+        <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
 
             <div class="card-body pb-1">
                 <h5 class="card-title">
@@ -36,29 +36,34 @@
                     <div class="card-text">• Mileage: <span th:text="*{mileage}">Mileage</span> km</div>
                     <div class="card-text">• Price: <span th:text="*{price}">Price</span> BGN</div>
                     <div class="card-text">• Engine: <span th:text="*{engine}">Engine type</span></div>
-                    <div class="card-text">• Transmission: <span th:text="*{transmission}">Transmission type</span></div>
-                    <div class="card-text">• Created: <span th:text="*{#temporals.format(offerCreated, 'dd-MM-yyyy HH:mm')}">Created</span></div>
-                    <div class="card-text">• Last updated: <span th:text="*{#temporals.format(offerCreated, 'dd-MM-yyyy HH:mm')}">Updated</span></div>
+                    <div class="card-text">• Transmission: <span th:text="*{transmission}">Transmission type</span>
+                    </div>
+                    <div class="card-text">• Created: <span
+                            th:text="*{#temporals.format(offerCreated, 'dd-MM-yyyy HH:mm')}">Created</span></div>
+                    <div class="card-text">• Last updated: <span
+                            th:text="*{#temporals.format(offerCreated, 'dd-MM-yyyy HH:mm')}">Updated</span></div>
                     <div class="card-text">• Seller:
                         <span th:text="*{sellerFirstName}">First name</span>
                         <span th:text="*{sellerLastName}">Last name</span>
                     </div>
                 </li>
             </ul>
-            <div class="card-body">
-                <a class="card-link" href="/">Update</a>
-                <a class="card-link" href="/">Delete</a>
+            <div sec:authorize="hasRole('ADMIN')" class="card-body">
+                <a class="card-link" th:href="@{/offers/update/{id}(id = *{id})}">Update</a>
+
+                    <a class="card-link" th:href="@{/offers/delete/{id}(id = *{id})}">Delete</a>
+
             </div>
         </div>
         <div class="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
-            <img th:src="*{imageUrl}" class="card-img-top"  alt="Car image">
+            <img th:src="*{imageUrl}" class="card-img-top" alt="Car image">
         </div>
     </div>
 </div>
 
 
 <div>
-             <footer> </footer>
+    <footer></footer>
 </div>
 
 </body>

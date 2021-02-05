@@ -4,18 +4,18 @@ import bg.softuni.mobilele.models.enums.EngineEnum;
 import bg.softuni.mobilele.models.enums.TransmissionEnum;
 import bg.softuni.mobilele.models.view.OfferDetailsViewModel;
 import bg.softuni.mobilele.models.view.OfferUploadModel;
+import bg.softuni.mobilele.models.view.UpdateOfferViewModel;
 import bg.softuni.mobilele.services.BrandService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/offers")
+@RestController
+@CrossOrigin
 public class OfferController extends BaseController {
     private final OfferService offerService;
     private final BrandService brandService;
@@ -54,11 +54,6 @@ public class OfferController extends BaseController {
         return new ModelAndView("details");
     }
 
-    @GetMapping("/update")
-    public ModelAndView getUpdateOffers() {
-        return new ModelAndView("update");
-    }
-
     @GetMapping("/{id}")
     public ModelAndView offerDetails(@PathVariable int id) {
         ModelAndView modelAndView = new ModelAndView("details");
@@ -70,6 +65,29 @@ public class OfferController extends BaseController {
 
         return modelAndView;
     }
+
+    @GetMapping("/update/{id}")
+    public ModelAndView getUpdateOffers(@PathVariable int id) {
+        ModelAndView modelAndView = new ModelAndView("update");
+        modelAndView.addObject("engines", EngineEnum.values());
+        modelAndView.addObject("transmissions", TransmissionEnum.values());
+        modelAndView.addObject("brands", brandService.getAllBrands());
+        modelAndView.addObject("formData", new UpdateOfferViewModel());
+        return modelAndView;
+    }
+
+    @PostMapping("/update/{id}")
+    public ModelAndView confirmUpdateOffers(@PathVariable("id") Long id, UpdateOfferViewModel updateOfferViewModel) {
+        this.offerService.updateOffer(id, updateOfferViewModel);
+        return super.redirect("/offers/all");
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteOffers(@PathVariable("id") Long id){
+        this.offerService.deleteOffer(id);
+        return super.redirect("/offers/all");
+    }
+
 
 
 }
